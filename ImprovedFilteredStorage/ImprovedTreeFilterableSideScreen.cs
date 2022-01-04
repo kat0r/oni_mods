@@ -18,6 +18,7 @@ namespace ImprovedFilteredStorage
 
         private ImprovedTreeFilterableSideScreenRow rowPrefab;
         private UIPool<ImprovedTreeFilterableSideScreenRow> rowPool;
+        private Dictionary<Tag, ImprovedTreeFilterableSideScreenRow> addedRows = new Dictionary<Tag, ImprovedTreeFilterableSideScreenRow>();
 
         private GameObject goNoContent;
 
@@ -63,7 +64,8 @@ namespace ImprovedFilteredStorage
 
         public void Refresh()
         {
-            ClearContent();
+            //clicking the "all" button in TreeFilterable calls refresh n amount of times, so completely rebuilding is slow as fuck
+
             if (ContentContainer == null || rowPool == null)
                 return;
 
@@ -71,6 +73,7 @@ namespace ImprovedFilteredStorage
             {
                 if (improvedTreeFilterable.GetAcceptedElements().Count == 0)
                 {
+                    ClearContent();
                     goNoContent.SetActive(true);
                 }
                 else
@@ -78,15 +81,28 @@ namespace ImprovedFilteredStorage
                     goNoContent.SetActive(false);
                     foreach (var acceptedTag in improvedTreeFilterable.GetAcceptedElements().OrderBy(x => x.Key.ProperNameStripLink()))
                     {
-                        var freeElement = rowPool.GetFreeElement(ContentContainer, true);
-                        freeElement.transform.SetAsLastSibling();
-                        freeElement.SetContent(improvedTreeFilterable, acceptedTag.Key, acceptedTag.Value);
+                        if (!addedRows.ContainsKey(acceptedTag.Key)) // is missing, add it
+                        {
+                            var freeElement = rowPool.GetFreeElement(ContentContainer, true);
+                            //freeElement.transform.SetAsLastSibling();
+                            freeElement.SetContent(improvedTreeFilterable, acceptedTag.Key, acceptedTag.Value);
+                            addedRows[acceptedTag.Key] = freeElement;
+                        }
+                    }
+
+                    var tagsToRemove = addedRows.Where(x => !improvedTreeFilterable.GetAcceptedElements().ContainsKey(x.Key)).ToList();
+                    foreach (var tagToRemove in tagsToRemove)
+                    {
+                        rowPool.ClearElement(tagToRemove.Value);
+                        addedRows.Remove(tagToRemove.Key);
                     }
                 }
             }
         }
         private void ClearContent()
         {
+            addedRows.Clear();
+
             if (rowPool != null)
                 rowPool.ClearAll();
         }
@@ -97,6 +113,7 @@ namespace ImprovedFilteredStorage
                 improvedTreeFilterable.OnUpdateFilters -= ImprovedTreeFilterable_OnUpdateFilters;
 
             improvedTreeFilterable = null;
+            ClearContent();
 
             base.ClearTarget();
         }
@@ -108,6 +125,7 @@ namespace ImprovedFilteredStorage
             if (improvedTreeFilterable != null)
                 improvedTreeFilterable.OnUpdateFilters += ImprovedTreeFilterable_OnUpdateFilters;
 
+            ClearContent();
             Refresh();
         }
 
