@@ -79,12 +79,12 @@ namespace ImprovedFilteredStorage
                 else
                 {
                     goNoContent.SetActive(false);
-                    foreach (var acceptedTag in improvedTreeFilterable.GetAcceptedElements().OrderBy(x => x.Key.ProperNameStripLink()))
+                    foreach (var acceptedTag in improvedTreeFilterable.GetAcceptedElements())
                     {
                         if (!addedRows.ContainsKey(acceptedTag.Key)) // is missing, add it
                         {
                             var freeElement = rowPool.GetFreeElement(ContentContainer, true);
-                            //freeElement.transform.SetAsLastSibling();
+                            
                             freeElement.SetContent(improvedTreeFilterable, acceptedTag.Key, acceptedTag.Value);
                             addedRows[acceptedTag.Key] = freeElement;
                         }
@@ -96,6 +96,10 @@ namespace ImprovedFilteredStorage
                         rowPool.ClearElement(tagToRemove.Value);
                         addedRows.Remove(tagToRemove.Key);
                     }
+
+                    //sorting
+                    foreach (var kvp in addedRows.OrderBy(x => x.Key.ProperNameStripLink()))
+                        kvp.Value.transform.SetAsLastSibling();
                 }
             }
         }
