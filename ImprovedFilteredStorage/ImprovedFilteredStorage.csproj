@@ -79,6 +79,7 @@
     <Compile Include="ImprovedTreeFilterable.cs" />
     <Compile Include="ImprovedTreeFilterableSideScreen.cs" />
     <Compile Include="ImprovedTreeFilterableActivateToggleButton.cs" />
+    <Compile Include="ImprovedTreeFilterableSideScreenRow.cs" />
     <Compile Include="Patches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strings.cs" />

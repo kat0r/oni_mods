@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using PeterHan;
 using PeterHan.PLib.UI;
+using UnityEngine.UI;
 
 namespace ImprovedFilteredStorage
 {
@@ -15,20 +16,11 @@ namespace ImprovedFilteredStorage
         //private GameObject target;
         private ImprovedTreeFilterable improvedTreeFilterable;
 
-        private char OnValidate_TextField(string text, int charIndex, char addedChar)
-        {
-            if (Char.IsDigit(addedChar)/* && float.TryParse(text, out float _)*/)
-                return addedChar;
+        private ImprovedTreeFilterableSideScreenRow rowPrefab;
+        private UIPool<ImprovedTreeFilterableSideScreenRow> rowPool;
 
-            return '\0';
-        }
-        private void OnTextChanged_TextField(Tag tag, string text)
-        {
-            if (float.TryParse(text, out float value))
-            {
-                improvedTreeFilterable.AddTagToFilter(tag, value);
-            }
-        }
+        private GameObject goNoContent;
+
 
         protected override void OnPrefabInit()
         {
@@ -42,8 +34,26 @@ namespace ImprovedFilteredStorage
                     Alignment = TextAnchor.MiddleLeft,
                     //Spacing = 8, 
                 };
+            var rootpanel = new PPanel("rootPanel")
+            {
+                Direction = PanelDirection.Vertical,
+                Spacing = 2,
+            };
+            ContentContainer = rootpanel.AddTo(gameObject);
 
-            ContentContainer = gameObject;
+            var noContent = new PLabel("nocontent")
+            {
+                Text = Strings.NOCONTENT,
+                TextStyle = PUITuning.Fonts.TextDarkStyle,
+            };
+            goNoContent = noContent.AddTo(ContentContainer);
+            goNoContent.SetActive(false);
+
+            var go = new GameObject("prefab");
+            rowPrefab = go.AddOrGet<ImprovedTreeFilterableSideScreenRow>();
+            DestroyImmediate(rowPrefab.transform.Find("amount").gameObject);
+            DestroyImmediate(rowPrefab.transform.Find("label").gameObject);
+            rowPool = new UIPool<ImprovedTreeFilterableSideScreenRow>(rowPrefab);
         }
 
         protected override void OnSpawn()
@@ -54,64 +64,31 @@ namespace ImprovedFilteredStorage
         public void Refresh()
         {
             ClearContent();
-            if (ContentContainer == null)
+            if (ContentContainer == null || rowPool == null)
                 return;
 
             if (improvedTreeFilterable != null && improvedTreeFilterable.Enabled)
             {
-                var rootPanel = new PPanel("rootPanel") { /*BackColor = Color.green,*/ FlexSize = Vector2.left, Spacing = 2, Alignment = TextAnchor.MiddleLeft };
-
                 if (improvedTreeFilterable.GetAcceptedElements().Count == 0)
                 {
-                    var noContent = new PLabel("nocontent")
-                    {
-                        Text = Strings.NOCONTENT,
-                        TextStyle = PUITuning.Fonts.TextDarkStyle,
-                    };
-                    rootPanel = rootPanel.AddChild(noContent);
+                    goNoContent.SetActive(true);
                 }
                 else
                 {
-                    foreach (var acceptedTag in improvedTreeFilterable.GetAcceptedElements())
+                    goNoContent.SetActive(false);
+                    foreach (var acceptedTag in improvedTreeFilterable.GetAcceptedElements().OrderBy(x => x.Key.ProperNameStripLink()))
                     {
-                        var elementRoot = new PPanel("panel" + acceptedTag.Key.ProperNameStripLink())
-                        {
-                            Direction = PanelDirection.Horizontal,
-                            Margin = new RectOffset(5, 5, 0, 0),
-                            Alignment = TextAnchor.UpperLeft,
-                            Spacing = 10,
-                            FlexSize = Vector2.left,
-                        };
-
-                        var textField = new PTextField("amount" + acceptedTag.Key.ProperNameStripLink())
-                        {
-                            MinWidth = 50,
-                            Text = acceptedTag.Value.ToString(),
-                            OnValidate = OnValidate_TextField,
-                            OnTextChanged = (GameObject _, string text) => OnTextChanged_TextField(acceptedTag.Key, text),
-                            FlexSize = Vector2.left,
-                        };
-
-                        elementRoot = elementRoot.AddChild(textField);
-
-                        var label = new PLabel("label" + acceptedTag.Key.ProperNameStripLink())
-                        {
-                            Text = acceptedTag.Key.ProperNameStripLink(),
-                            TextStyle = PUITuning.Fonts.TextDarkStyle,
-                            FlexSize = Vector2.left,
-                        };
-                        elementRoot = elementRoot.AddChild(label);
-                        rootPanel = rootPanel.AddChild(elementRoot);
+                        var freeElement = rowPool.GetFreeElement(ContentContainer, true);
+                        freeElement.transform.SetAsLastSibling();
+                        freeElement.SetContent(improvedTreeFilterable, acceptedTag.Key, acceptedTag.Value);
                     }
                 }
-                rootPanel.AddTo(ContentContainer);
-                //PUIUtils.DebugObjectTree(ContentContainer);
             }
         }
         private void ClearContent()
         {
-            for (int i = 0; i < gameObject.transform.childCount; i++)
-                GameObject.Destroy(gameObject.transform.GetChild(i).gameObject);
+            if (rowPool != null)
+                rowPool.ClearAll();
         }
 
         public override void ClearTarget()
