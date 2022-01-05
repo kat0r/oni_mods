@@ -95,7 +95,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>$(ILMergeConsolePath) /out:C:\Users\rhen\Documents\Klei\OxygenNotIncluded\mods\Dev\ImprovedFilteredStorage\ImprovedFilteredStorage.dll ImprovedFilteredStorage.dll PLib.dll /lib:D:\steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed
+    <PostBuildEvent>$(ILMergeConsolePath) /ndebug /out:C:\Users\rhen\Documents\Klei\OxygenNotIncluded\mods\Dev\ImprovedFilteredStorage\ImprovedFilteredStorage.dll ImprovedFilteredStorage.dll PLib.dll /lib:D:\steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed
 
 REM xcopy /y $(TargetDir)ImprovedFilteredStorage_merged.dll C:\Users\rhen\Documents\Klei\OxygenNotIncluded\mods\Dev\ImprovedFilteredStorage\ImprovedFilteredStorage.dll
 REM xcopy /y $(TargetDir)ImprovedFilteredStorage_merged.pdb C:\Users\rhen\Documents\Klei\OxygenNotIncluded\mods\Dev\ImprovedFilteredStorage\ImprovedFilteredStorage.pdb

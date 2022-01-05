@@ -25,6 +25,7 @@ namespace ImprovedFilteredStorage
 
             var textField = new PTextField("amount")
             {
+                Text = "0",
                 MinWidth = 50,
                 OnValidate = OnValidate_TextField,
                 OnTextChanged = (GameObject _, string text) => OnTextChanged_TextField(text),
@@ -54,7 +55,12 @@ namespace ImprovedFilteredStorage
                 locLabel.alignment = TMPro.TextAlignmentOptions.Left;
             }
             if (uiAmount != null)
-                uiAmount.SetText(amount.ToString(), true);
+            {
+                //this fixes a weird crash/UX issue, dont ask me why
+                uiAmount.text = "0";
+                uiAmount.text = amount.ToString();
+                uiAmount.SetAllDirty();
+            }
         }
 
         private char OnValidate_TextField(string text, int charIndex, char addedChar)
@@ -66,6 +72,13 @@ namespace ImprovedFilteredStorage
         }
         private void OnTextChanged_TextField(string text)
         {
+            if (String.IsNullOrWhiteSpace(text))
+            {
+                uiAmount.text = "0";
+                uiAmount.SetAllDirty();
+                return;
+            }
+
             if (float.TryParse(text, out float value))
             {
                 m_target.AddTagToFilter(m_tag, value);
