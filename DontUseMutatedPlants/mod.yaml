@@ -1,0 +1,3 @@
+title: "DontUseMutatedPlants"
+description: "Prevents cooking stations and fish feeders from using mutations."
+staticID: "DontUseMutatedPlants"
