@@ -79,6 +79,15 @@ namespace DontUseMutatedPlants
             }
         }
 
+        [HarmonyPatch(typeof(MicrobeMusherConfig), "DoPostConfigureComplete")]
+        public static class Patch_MicrobeMusherConfig_DoPostConfigureComplete
+        {
+            internal static void Postfix(GameObject go)
+            {
+                go.AddOrGet<AllowUseMutationsComp>();
+            }
+        }
+
         [HarmonyPatch(typeof(FishFeederConfig), "DoPostConfigureComplete")]
         public static class Patch_FishFeederConfig_DoPostConfigureComplete
         {
