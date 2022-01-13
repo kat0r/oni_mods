@@ -68,6 +68,9 @@ namespace ImprovedFilteredStorage
  
         public void RemoveIncorrectAcceptedTags()
         {
+            if (!Enabled)
+                return;
+
             Storage storage = GetComponent<Storage>();
             float storageMaxCap = userControlledCapacity != null ? userControlledCapacity.MaxCapacity : 20000f;
 
@@ -120,6 +123,8 @@ namespace ImprovedFilteredStorage
         public void UpdateFilters(IList<Tag> filters)
         {
             acceptedElements = filters.ToDictionary(key => key, key => acceptedElements.ContainsKey(key) ? acceptedElements[key] : 0);
+            if (!Enabled)
+                return;
             
             RemoveIncorrectAcceptedTags();
             UpdateCapacityControl();
