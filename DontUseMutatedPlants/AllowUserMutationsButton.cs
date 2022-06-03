@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PeterHan.PLib.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,7 +40,7 @@ namespace DontUseMutatedPlants
             var allowUseMutationsComp = gameObject.GetComponent<AllowUseMutationsComp>();
             if (allowUseMutationsComp == null)
             {
-                Debug.LogWarning("AllowUseMutationsComp == null in OnToggleEnable");
+                PUtil.LogWarning("AllowUseMutationsComp == null in OnToggleEnable");
                 return;
             }
             allowUseMutationsComp.AllowUsageOfMutations = true;
@@ -51,7 +52,7 @@ namespace DontUseMutatedPlants
             var allowUseMutationsComp = gameObject.GetComponent<AllowUseMutationsComp>();
             if (allowUseMutationsComp == null)
             {
-                Debug.LogWarning("AllowUseMutationsComp == null in OnToggleDisable");
+                PUtil.LogWarning("AllowUseMutationsComp == null in OnToggleDisable");
                 return;
             }
             allowUseMutationsComp.AllowUsageOfMutations = false;

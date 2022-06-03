@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using PeterHan.PLib.UI;
+using PeterHan.PLib.Core;
 using System.Linq;
 
 namespace ImprovedFilteredStorage
@@ -35,7 +36,7 @@ namespace ImprovedFilteredStorage
             var improvedTreeFilterable = gameObject.GetComponent<ImprovedTreeFilterable>();
             if (improvedTreeFilterable == null)
             {
-                Debug.LogWarning("ImprovedTreeFilterable == null in OnToggleEnable");
+                PUtil.LogWarning("ImprovedTreeFilterable == null in OnToggleEnable");
                 return;
             }
 
@@ -53,7 +54,7 @@ namespace ImprovedFilteredStorage
             var improvedTreeFilterable = gameObject.GetComponent<ImprovedTreeFilterable>();
             if (improvedTreeFilterable == null)
             {
-                Debug.LogWarning("ImprovedTreeFilterable == null in OnToggleDisable");
+                PUtil.LogWarning("ImprovedTreeFilterable == null in OnToggleDisable");
                 return;
             }
 

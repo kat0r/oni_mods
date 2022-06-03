@@ -173,7 +173,7 @@ namespace ImprovedFilteredStorage
 
                 fetchList.Add(new[] { tag.Key }, REQUIREDTAGS.Get(__instance), FORBIDDENTAGS.Get(__instance), amountMissing, FetchOrder2.OperationalRequirement.Functional);
             }
-            PUtil.LogDebug("Submit");
+            //PUtil.LogDebug("Submit");
             fetchList.Submit(new System.Action(() => { PUtil.LogDebug("GenerateFetchListONFETCHCOMPLETE"); ONFETCHCOMPLETE.Invoke(__instance); }), false);
         }
 

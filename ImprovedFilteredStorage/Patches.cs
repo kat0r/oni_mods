@@ -74,7 +74,7 @@ namespace ImprovedFilteredStorage
             var improvedTreeFilterable = ROOT.Get(__instance).GetComponent<ImprovedTreeFilterable>();
                 if (improvedTreeFilterable != null && improvedTreeFilterable.Enabled)
                 {
-                    PUtil.LogDebug("FilteredStorage_OnStorageChanged -> GenerateFetchList");
+                    //PUtil.LogDebug("FilteredStorage_OnStorageChanged -> GenerateFetchList");
                     improvedTreeFilterable.GenerateFetchList(__instance);
                 }
             }
