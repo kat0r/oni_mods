@@ -6,6 +6,7 @@ using KSerialization;
 using PeterHan.PLib.Detours;
 using UnityEngine;
 using System.Runtime.Serialization;
+using PeterHan.PLib.Core;
 
 namespace ImprovedFilteredStorage
 {
@@ -63,7 +64,7 @@ namespace ImprovedFilteredStorage
                     }
                 }
             }
-            //Debug.Log($"userControlledCapacity :{userControlledCapacity == null} on {gameObject}");
+            //PUtil.LogDebug($"userControlledCapacity :{userControlledCapacity == null} on {gameObject}");
         }
  
         public void RemoveIncorrectAcceptedTags()
@@ -148,12 +149,12 @@ namespace ImprovedFilteredStorage
             }
 
             RemoveIncorrectAcceptedTags();
-
-            FETCHLIST.Set(__instance, new FetchList2(STORAGE.Get(__instance), CHORETYPE.Get(__instance)));
-            FETCHLIST.Get(__instance).ShowStatusItem = false;
+            var fetchList = new FetchList2(STORAGE.Get(__instance), CHORETYPE.Get(__instance));
+            FETCHLIST.Set(__instance, fetchList);
+            fetchList.ShowStatusItem = false;
 
             float storageLeft = userControlledCapacity != null ? userControlledCapacity.MaxCapacity : 20000f;
-            //Debug.Log($"storageLeft: {storageLeft}");
+            //PUtil.LogDebug($"storageLeft: {storageLeft}");
 
             foreach (var tag in GetAcceptedElements())
             {
@@ -168,11 +169,12 @@ namespace ImprovedFilteredStorage
                     amountMissing = storageLeft;
 
                 storageLeft -= amountMissing;
-                //Debug.Log($"add: {tag.Key}, {amountMissing}");
+                //PUtil.LogDebug($"add: {tag.Key}, {amountMissing}");
 
-                FETCHLIST.Get(__instance).Add(new[] { tag.Key }, REQUIREDTAGS.Get(__instance), FORBIDDENTAGS.Get(__instance), amountMissing, FetchOrder2.OperationalRequirement.Functional);
+                fetchList.Add(new[] { tag.Key }, REQUIREDTAGS.Get(__instance), FORBIDDENTAGS.Get(__instance), amountMissing, FetchOrder2.OperationalRequirement.Functional);
             }
-            FETCHLIST.Get(__instance).Submit(new System.Action(() => ONFETCHCOMPLETE.Invoke(__instance)), false);
+            PUtil.LogDebug("Submit");
+            fetchList.Submit(new System.Action(() => { PUtil.LogDebug("GenerateFetchListONFETCHCOMPLETE"); ONFETCHCOMPLETE.Invoke(__instance); }), false);
         }
 
         // to update the little info on the right "x of y stored"

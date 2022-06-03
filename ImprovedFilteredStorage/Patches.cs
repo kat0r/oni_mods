@@ -64,6 +64,22 @@ namespace ImprovedFilteredStorage
             }
         }
 
+        [HarmonyPatch(typeof(FilteredStorage), "OnStorageChanged")] //(object data)
+        private static class FilteredStorage_OnStorageChanged
+        {
+            private static readonly IDetouredField<FilteredStorage, KMonoBehaviour> ROOT = PDetours.DetourField<FilteredStorage, KMonoBehaviour>("root");
+
+            internal static void Postfix(FilteredStorage __instance)
+            {
+            var improvedTreeFilterable = ROOT.Get(__instance).GetComponent<ImprovedTreeFilterable>();
+                if (improvedTreeFilterable != null && improvedTreeFilterable.Enabled)
+                {
+                    PUtil.LogDebug("FilteredStorage_OnStorageChanged -> GenerateFetchList");
+                    improvedTreeFilterable.GenerateFetchList(__instance);
+                }
+            }
+        }
+
         // dont show the usual slider/max capacity side screen
         [HarmonyPatch(typeof(CapacityControlSideScreen), "IsValidForTarget")]
         public static class CapacityControlSideScreen_IsValidForTarget
