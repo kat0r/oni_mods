@@ -1,8 +1,7 @@
-[b]HUGE DISCLAIMER: I tested it and found no measurable negative impact but it may reduce performance. 
-I am touching pathfinding/chores stuff here, let me know in the comments if it cripples your game.[/b]
-
 Prevents Cooking Stations, Microbe Mushers and Fish Feeders from using mutated seeds - until you allow them to do that with a new button. Unidentified seeds are always denied.
 Will not remove seeds from stations, only prevents new seeds from being added.
+
+New with 1.0.2: Option to add this feature to Conveyor Loaders
 
 [b]Source[/b]
 https://github.com/kat0r/oni_mods

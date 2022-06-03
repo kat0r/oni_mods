@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using PeterHan.PLib.Core;
 using PeterHan.PLib.Database;
+using PeterHan.PLib.Options;
 using System;
 using System.Linq;
 
@@ -15,6 +16,7 @@ namespace DontUseMutatedPlants
         {
             base.OnLoad(harmony);
             PUtil.InitLibrary();
+            new POptions().RegisterOptions(this, typeof(DontUseMutatedPlantsOptions));
             new PLocalization().Register();
         }
           
@@ -94,6 +96,16 @@ namespace DontUseMutatedPlants
             internal static void Postfix(GameObject go)
             {
                 go.AddOrGet<AllowUseMutationsComp>();
+            }
+        }
+
+        [HarmonyPatch(typeof(SolidConduitInboxConfig), "DoPostConfigureComplete")]
+        public static class Patch_SolidConduitInboxConfig_DoPostConfigureComplete
+        {
+            internal static void Postfix(GameObject go)
+            {
+                if (DontUseMutatedPlantsOptions.Instance.AddToConveyorLoader)
+                    go.AddOrGet<AllowUseMutationsComp>();
             }
         }
     }

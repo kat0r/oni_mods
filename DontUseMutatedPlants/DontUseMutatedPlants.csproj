@@ -46,6 +46,10 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>..\..\..\..\..\steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PLib, Version=4.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\PLib.4.7.0\lib\net471\PLib.dll</HintPath>
     </Reference>
@@ -78,6 +82,7 @@
   <ItemGroup>
     <Compile Include="AllowUseMutationsComp.cs" />
     <Compile Include="AllowUserMutationsButton.cs" />
+    <Compile Include="DontUseMutatedPlantsOptions.cs" />
     <Compile Include="Patches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strings.cs" />
@@ -107,6 +112,9 @@ xcopy /y $(TargetDir)mod*.* C:\Users\rhen\Documents\Klei\OxygenNotIncluded\mods\
   </Target>
   <ItemGroup>
     <PackageReference Include="ILMerge" Version="3.0.41" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="desc.txt" />
   </ItemGroup>
   <Target Name="ILMerge">
     <!-- the ILMergePath property points to the location of ILMerge.exe console application -->
