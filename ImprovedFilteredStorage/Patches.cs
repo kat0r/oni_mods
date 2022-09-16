@@ -133,5 +133,14 @@ namespace ImprovedFilteredStorage
                 go.AddOrGet<ImprovedTreeFilterable>();
             }
         }
+
+        [HarmonyPatch(typeof(SolidConduitInboxConfig), "DoPostConfigureComplete")]
+        public static class Patch_SolidConduitInboxConfig_DoPostConfigureComplete
+        {
+            internal static void Postfix(GameObject go)
+            {
+                go.AddOrGet<ImprovedTreeFilterable>();
+            }
+        }
     }
 }
