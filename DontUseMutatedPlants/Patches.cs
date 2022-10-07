@@ -52,13 +52,12 @@ namespace DontUseMutatedPlants
         }
 
         [HarmonyPatch(typeof(FetchManager), "IsFetchablePickup")]
-        [HarmonyPatch(new Type[] { typeof(KPrefabID), typeof(Storage), typeof(float), typeof(TagBits), typeof(TagBits), typeof(TagBits), typeof(Storage) },
-                        new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Ref, ArgumentType.Ref, ArgumentType.Normal })]
+        //[HarmonyPatch(new Type[] { typeof(KPrefabID), typeof(FetchChore), typeof(Storage) }]
         public static class FetchManager_IsFetchablePickup2
         {
-            internal static void Postfix(ref bool __result, KPrefabID pickup_id, Storage destination)
+            internal static void Postfix(ref bool __result, Pickupable pickup, Storage destination)
             {
-                if (ShouldPickupBeBlocked(pickup_id.GetComponent<Pickupable>(), destination))
+                if (ShouldPickupBeBlocked(pickup, destination))
                     __result = false;
             }
         }
