@@ -75,7 +75,7 @@ namespace ImprovedFilteredStorage
             Storage storage = GetComponent<Storage>();
             float storageMaxCap = userControlledCapacity != null ? userControlledCapacity.MaxCapacity : 20000f;
 
-            foreach (var tag in storage.GetAllTagsInStorage())
+            foreach (var tag in storage.GetAllIDsInStorage())
             {
                 if (acceptedElements.ContainsKey(tag))
                 {
@@ -121,7 +121,7 @@ namespace ImprovedFilteredStorage
             this.UpdateFilters(acceptedElements.Keys.ToList());
         }
 
-        public void UpdateFilters(IList<Tag> filters)
+        public void UpdateFilters(IEnumerable<Tag> filters)
         {
             acceptedElements = filters.ToDictionary(key => key, key => acceptedElements.ContainsKey(key) ? acceptedElements[key] : 0);
             if (!Enabled)
@@ -136,8 +136,6 @@ namespace ImprovedFilteredStorage
         private static readonly IDetouredField<FilteredStorage, FetchList2> FETCHLIST = PDetours.DetourField<FilteredStorage, FetchList2>("fetchList");
         private static readonly IDetouredField<FilteredStorage, Storage> STORAGE = PDetours.DetourField<FilteredStorage, Storage>("storage");
         private static readonly IDetouredField<FilteredStorage, ChoreType> CHORETYPE = PDetours.DetourField<FilteredStorage, ChoreType>("choreType");
-        private static readonly IDetouredField<FilteredStorage, Tag[]> REQUIREDTAGS = PDetours.DetourField<FilteredStorage, Tag[]>("requiredTags");
-        private static readonly IDetouredField<FilteredStorage, Tag[]> FORBIDDENTAGS = PDetours.DetourField<FilteredStorage, Tag[]>("forbiddenTags");
         public static readonly DetouredMethod<System.Action<FilteredStorage>> ONFETCHCOMPLETE = typeof(FilteredStorage).DetourLazy<System.Action<FilteredStorage>>("OnFetchComplete");
 
         public void GenerateFetchList(FilteredStorage __instance)
@@ -171,7 +169,7 @@ namespace ImprovedFilteredStorage
                 storageLeft -= amountMissing;
                 //PUtil.LogDebug($"add: {tag.Key}, {amountMissing}");
 
-                fetchList.Add(new[] { tag.Key }, REQUIREDTAGS.Get(__instance), FORBIDDENTAGS.Get(__instance), amountMissing, FetchOrder2.OperationalRequirement.Functional);
+                fetchList.Add(tag.Key, null, amountMissing);
             }
             //PUtil.LogDebug("Submit");
             fetchList.Submit(new System.Action(() => { PUtil.LogDebug("GenerateFetchListONFETCHCOMPLETE"); ONFETCHCOMPLETE.Invoke(__instance); }), false);

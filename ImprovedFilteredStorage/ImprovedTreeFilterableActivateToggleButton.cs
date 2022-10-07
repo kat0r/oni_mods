@@ -65,7 +65,7 @@ namespace ImprovedFilteredStorage
 
             TreeFilterable treeFilterable = gameObject.GetComponent<TreeFilterable>();
             if (treeFilterable != null)
-                treeFilterable.UpdateFilters(improvedTreeFilterable.GetAcceptedElements().Keys.ToList()); // regenerate fetchlist, cause we likely changed max capacity
+                treeFilterable.UpdateFilters(new System.Collections.Generic.HashSet<Tag>(improvedTreeFilterable.GetAcceptedElements().Keys)); // regenerate fetchlist, cause we likely changed max capacity
 
             DetailsScreen.Instance.DeactivateSideContent(); // complete ui refresh for the ~3sidescreens I touched, couldnt find a better way
             DetailsScreen.Instance.Refresh(gameObject);
