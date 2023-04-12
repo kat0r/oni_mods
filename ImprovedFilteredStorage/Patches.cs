@@ -2,6 +2,7 @@ using HarmonyLib;
 using Unity;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Reflection;
 using SideScreenRef = DetailsScreen.SideScreenRef;
 using PeterHan.PLib.UI;
 using PeterHan.PLib.Core;
@@ -17,6 +18,11 @@ namespace ImprovedFilteredStorage
             base.OnLoad(harmony);
             PUtil.InitLibrary();
             new PLocalization().Register();
+        }
+
+        public override void OnAllModsLoaded(Harmony harmony, IReadOnlyList<KMod.Mod> mods)
+        {
+            Patch_OtherMods_DoPostConfigureComplete.Patch( harmony );
         }
 
         [HarmonyPatch(typeof(DetailsScreen), "OnPrefabInit")]
@@ -129,6 +135,42 @@ namespace ImprovedFilteredStorage
         public static class Patch_StorageLockerSmartConfig_DoPostConfigureComplete
         {
             internal static void Postfix(GameObject go)
+            {
+                go.AddOrGet<ImprovedTreeFilterable>();
+            }
+        }
+
+        // Optionally support storage from other mods.
+        public static class Patch_OtherMods_DoPostConfigureComplete
+        {
+            public static void Patch( Harmony harmony )
+            {
+                string[] methods =
+                {
+                    // Freezer
+                    "Psyko.Freezer.FreezerConfig",
+                    // Dupes Refrigeration
+                    "Advanced_Refrigeration.CompressorUnitConfig",
+                    "Advanced_Refrigeration.FridgeAdvancedConfig",
+                    "Advanced_Refrigeration.FridgeBlueConfig",
+                    "Advanced_Refrigeration.FridgePodConfig",
+                    "Advanced_Refrigeration.FridgeRedConfig",
+                    "Advanced_Refrigeration.FridgeYellowConfig",
+                    "Advanced_Refrigeration.HightechBigFridgeConfig",
+                    "Advanced_Refrigeration.HightechSmallFridgeConfig",
+                    "Advanced_Refrigeration.SimpleFridgeConfig",
+                    "Advanced_Refrigeration.SpaceBoxConfig",
+                };
+                foreach( string method in methods )
+                {
+                    MethodInfo info = AccessTools.Method( method + ":DoPostConfigureComplete");
+                    if( info != null )
+                        harmony.Patch( info, prefix: new HarmonyMethod(
+                            typeof( Patch_OtherMods_DoPostConfigureComplete ).GetMethod( "DoPostConfigureComplete" )));
+                }
+            }
+
+            public static void DoPostConfigureComplete(GameObject go)
             {
                 go.AddOrGet<ImprovedTreeFilterable>();
             }
