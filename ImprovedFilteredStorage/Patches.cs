@@ -71,7 +71,7 @@ namespace ImprovedFilteredStorage
 
             internal static void Postfix(FilteredStorage __instance)
             {
-            var improvedTreeFilterable = ROOT.Get(__instance).GetComponent<ImprovedTreeFilterable>();
+                var improvedTreeFilterable = ROOT.Get(__instance).GetComponent<ImprovedTreeFilterable>();
                 if (improvedTreeFilterable != null && improvedTreeFilterable.Enabled)
                 {
                     //PUtil.LogDebug("FilteredStorage_OnStorageChanged -> GenerateFetchList");
@@ -133,5 +133,33 @@ namespace ImprovedFilteredStorage
                 go.AddOrGet<ImprovedTreeFilterable>();
             }
         }
+
+        // Gravitas Shipping Container
+
+        [HarmonyPatch(typeof(LonelyMinionHouse.Instance), "CompleteEvent")]
+        public static class Patch_LonelyMinionHouse_CompleteEvent
+        {
+            internal static void Postfix(LonelyMinionHouse.Instance __instance)
+            {
+                if (__instance.gameObject.GetComponent<TreeFilterable>() != null)
+                {
+                    __instance.gameObject.AddOrGet<ImprovedTreeFilterable>();
+                }
+            }
+        }
     }
+
+
+    [HarmonyPatch(typeof(LonelyMinionHouse.Instance), "OnCompleteStorySequence")]
+    public static class Patch_LonelyMinionHouse_OnCompleteStorySequence
+    {
+        internal static void Postfix(LonelyMinionHouse.Instance __instance)
+        {
+            __instance.gameObject.AddOrGet<ImprovedTreeFilterable>();
+
+        }
+    }
+
 }
+
+
