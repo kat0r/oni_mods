@@ -1,5 +1,5 @@
 Simple mod that allows you to put exact amounts into storage (my use-case was the cargo module), like 100kg of coal + 1000kg of copper ore, etc.
-To use: click the new "Enable Partitioned Storage" Button on the building, select what types of stuff you want to store, then enter the amounts. Can be removed/added to existing saves, though if you delete the mod you may have to re-check previously enabled building and reset the the "store only up to x kg" slider.
+To use: click the new "Enable Partitions" Button on the building, select what types of stuff you want to store, then enter the amounts. Can be removed/added to existing saves, though if you delete the mod you may have to re-check previously enabled building and reset the the "store only up to x kg" slider.
 
 Works right now for (smart) storage bins, Orbital Cargo Modules, and Ration Box/Refrigerators.
 
