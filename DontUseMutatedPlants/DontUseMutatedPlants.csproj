@@ -98,11 +98,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>$(ILMergeConsolePath) /ndebug /out:C:\Users\rhen\Documents\Klei\OxygenNotIncluded\mods\Dev\DontUseMutatedPlants\DontUseMutatedPlants.dll DontUseMutatedPlants.dll PLib.dll /lib:D:\steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed
+    <PostBuildEvent>$(ILMergeConsolePath) /ndebug /out:C:\Users\sha\Documents\Klei\OxygenNotIncluded\mods\Dev\DontUseMutatedPlants\DontUseMutatedPlants.dll DontUseMutatedPlants.dll PLib.dll /lib:D:\steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed
 
-REM xcopy /y $(TargetDir)DontUseMutatedPlants_merged.dll C:\Users\rhen\Documents\Klei\OxygenNotIncluded\mods\Dev\DontUseMutatedPlants\DontUseMutatedPlants.dll
-REM xcopy /y $(TargetDir)DontUseMutatedPlants_merged.pdb C:\Users\rhen\Documents\Klei\OxygenNotIncluded\mods\Dev\DontUseMutatedPlants\DontUseMutatedPlants.pdb
-xcopy /y $(TargetDir)mod*.* C:\Users\rhen\Documents\Klei\OxygenNotIncluded\mods\Dev\DontUseMutatedPlants</PostBuildEvent>
+REM xcopy /y $(TargetDir)DontUseMutatedPlants_merged.dll C:\Users\sha\Documents\Klei\OxygenNotIncluded\mods\Dev\DontUseMutatedPlants\DontUseMutatedPlants.dll
+REM xcopy /y $(TargetDir)DontUseMutatedPlants_merged.pdb C:\Users\sha\Documents\Klei\OxygenNotIncluded\mods\Dev\DontUseMutatedPlants\DontUseMutatedPlants.pdb
+xcopy /y $(TargetDir)mod*.* C:\Users\sha\Documents\Klei\OxygenNotIncluded\mods\Dev\DontUseMutatedPlants</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
