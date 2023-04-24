@@ -3,12 +3,10 @@ To use: click the new "Enable Partitions" Button on the building, select what ty
 
 Works right now for (smart) storage bins, Orbital Cargo Modules, and Ration Box/Refrigerators.
 
-[b]TODO[/b]
-[list]
-[*] [strike]Improve UI performance when adding/removing elements[/strike]
-[*] Implement scrolling
-[*] Probably some other stuff, as this is my first mod
-[/list]
+New with 1.0.6: - support also Freezer and Dupes Refrigeration mods (made by llunak)
+				- Added support for Gravitas Shipping Container (made by patricklecuyer)
+				- Added support for Conveyor Recepticles (made by TheFantasticLoki)
+
 
 [b]Source[/b]
 https://github.com/kat0r/oni_mods

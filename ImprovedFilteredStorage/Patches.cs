@@ -192,6 +192,10 @@ namespace ImprovedFilteredStorage
                             typeof( Patch_OtherMods_DoPostConfigureComplete ).GetMethod( "DoPostConfigureComplete" )));
                 }
             }
+            public static void DoPostConfigureComplete(GameObject go)
+            {
+                go.AddOrGet<ImprovedTreeFilterable>();
+            }
         }
     }
 

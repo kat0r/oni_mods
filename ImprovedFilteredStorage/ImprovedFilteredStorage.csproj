@@ -110,6 +110,9 @@ xcopy /y $(TargetDir)mod*.* C:\Users\sha\Documents\Klei\OxygenNotIncluded\mods\D
   <ItemGroup>
     <PackageReference Include="ILMerge" Version="3.0.41" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="desc.txt" />
+  </ItemGroup>
   <Target Name="ILMerge">
     <!-- the ILMergePath property points to the location of ILMerge.exe console application -->
     <Exec Command="$(ILMergeConsolePath) /out:ImprovedFilteredStorage_merged.dll ImprovedFilteredStorage.dll PLib.dll" />
