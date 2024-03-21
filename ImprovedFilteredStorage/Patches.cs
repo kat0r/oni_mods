@@ -1,6 +1,7 @@
 using HarmonyLib;
 using Unity;
 using UnityEngine;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using SideScreenRef = DetailsScreen.SideScreenRef;
@@ -168,27 +169,27 @@ namespace ImprovedFilteredStorage
         {
             public static void Patch( Harmony harmony )
             {
-                string[] methods =
+                string[] configTypes =
                 {
                     // Freezer
-                    "Psyko.Freezer.FreezerConfig",
+                    "Psyko.Freezer.FreezerConfig, Freezer",
                     // Dupes Refrigeration
-                    "Advanced_Refrigeration.CompressorUnitConfig",
-                    "Advanced_Refrigeration.FridgeAdvancedConfig",
-                    "Advanced_Refrigeration.FridgeBlueConfig",
-                    "Advanced_Refrigeration.FridgePodConfig",
-                    "Advanced_Refrigeration.FridgeRedConfig",
-                    "Advanced_Refrigeration.FridgeYellowConfig",
-                    "Advanced_Refrigeration.HightechBigFridgeConfig",
-                    "Advanced_Refrigeration.HightechSmallFridgeConfig",
-                    "Advanced_Refrigeration.SimpleFridgeConfig",
-                    "Advanced_Refrigeration.SpaceBoxConfig",
+                    "Advanced_Refrigeration.CompressorUnitConfig, Advanced Refrigeration",
+                    "Advanced_Refrigeration.FridgeAdvancedConfig, Advanced Refrigeration",
+                    "Advanced_Refrigeration.FridgeBlueConfig, Advanced Refrigeration",
+                    "Advanced_Refrigeration.FridgePodConfig, Advanced Refrigeration",
+                    "Advanced_Refrigeration.FridgeRedConfig, Advanced Refrigeration",
+                    "Advanced_Refrigeration.FridgeYellowConfig, Advanced Refrigeration",
+                    "Advanced_Refrigeration.HightechBigFridgeConfig, Advanced Refrigeration",
+                    "Advanced_Refrigeration.HightechSmallFridgeConfig, Advanced Refrigeration",
+                    "Advanced_Refrigeration.SimpleFridgeConfig, Advanced Refrigeration",
+                    "Advanced_Refrigeration.SpaceBoxConfig, Advanced Refrigeration",
                 };
-                foreach( string method in methods )
+                foreach( string configType in configTypes )
                 {
-                    MethodInfo info = AccessTools.Method( method + ":DoPostConfigureComplete");
+                    MethodInfo info = AccessTools.Method( Type.GetType( configType ), "DoPostConfigureComplete");
                     if( info != null )
-                        harmony.Patch( info, prefix: new HarmonyMethod(
+                        harmony.Patch( info, postfix: new HarmonyMethod(
                             typeof( Patch_OtherMods_DoPostConfigureComplete ).GetMethod( "DoPostConfigureComplete" )));
                 }
             }
